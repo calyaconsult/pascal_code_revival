@@ -1,0 +1,511 @@
+
+unit dtenv;
+interface
+Tascal
+5.516.0
+ältere Version
+neve s. DTCNV1
+type
+mtype
+=
+array[0..12] of integer;
+WdN = array[1..7] of string[2];
+year
+=
+object
+day, month, yr, wday : integer;
+cday : LongInt;
+wdayName: string[2];
+msg :
+boolean; { flag für Meldung wenn yr
+constructor Init;
+destructor Done;
+procedure SetDatum(j,m,t
+:
+integer);
+procedure SetCday (cd : LongInt);
+procedure DayOfWeek;
+end;
+hjyear = object(year)
+adyear
+=
+ep, sj: integer;
+constructor Init;
+procedure CalcCday; virtual;
+procedure CalcDatum; virtual;
+procedure ChangeSetting( e,s
+end;
+object(year)
+implementation
+const Gregein
+Sisal =
+procedure CalcCday; virtual;
+procedure CalcDatum; virtual;
+end;
+=
+577735;
+10631;
+Hegire = 227014;
+MaxInt
+=
+0}
+: integer);
+C
+32767;
+WdayNms
+: WdN
+=
+ma : mtype
+=
+mb : mtype
+=
+('SO', 'MO', 'DI', 'MI', 'DO', 'FR', 'SA');
+(0,31,59,90,120,151, 181, 212, 243,273,304,334,365);
+(710,1773,2482,3545,4608,5317,6380,7443,8506,9215,10278
+mh : mtype = (2,5,7,10,13,0,18,21,24,26, 29, MaxInt,0);
+function floor(a,b: LongInt): LongInt;
+begin
+if (a 0) and (b > 0) or (a > 0) and (b < 0)
+then floor := a div b
+else floor := a div b
+1
+end; {floor}
+constructor year. Init;
+# DTCNV-1-
+C
+)
+begin
+day := 1; month := 1; yr := 1; wday := 7;
+cday := -1; wdayName
+end;
+destructor year. Done;
+begin end;
+procedure year. SetDatum;
+begin
+yr:
+j;
+month := m;
+day := t;
+end;
+procedure year. SetCday;
+begin
+cday := cd;
+: =
+'SA'; msg: := FALSE;
+end;
+procedure year. DayOfWeek;
+begin
+if cday >= 0 then wday := cday mod 7+1
+else wday := 8-(abs(cday) mod 7);
+wdayName := WdayNms[wday];
+end;
+constructor hjyear. Init;
+begin
+year. Init;
+ep : = 15;
+sj: := 15;
+end;
+procedure hjyear. ChangeSetting;
+begin
+ep : = e;
+sj := s;
+end;
+procedure hjyear. CalcCday;
+var mhig : mtype;
+dh, tage, 1,s,j,k,m, t, u, v,cyc
+: LongInt;
+procedure accumulate; { Monate in Tage,
+var x,q : integer;
+begin
+q := 1;
+for x : = 1 to 6 do
+begin
++
+Anzahl Tage alterniert zw. 30 น. 29 }
+{ Startwert Anzahl verg. Monate}
+u := u + 30;
+: = q
+1;
+if mq then exit
+q
+else begin
+# DTCNU-2-
+end
+end; { accumulate }
+u
+:= u + 29;
+q
+:= q + 1;
+if m
+<
+q then exit
+end;
+begin
+mhig := mh;
+j
+:= yr;
+m
+: = month
+1;
+t
+:= day;
+if ep
+=
+if j
+=
+16 then dh := Hegire else dh := Hegire-1;
+0 then begin
+msg := TRUE;
+j := 1;
+yr := 1;
+end
+else msg := FALSE;
+if j
+<< 0 then j := j + 1;
+j
+:= j
+1;
+сус := floor(k,30); { Anzahl 30jahreszyklen }
+tage: Sisal*cyc;
+k
+:= k-cyc*30;
+mhig[5] := sj;
+V:= -1;
+repeat
+V: V+1;
+{ Jahre im aktuellen Zyklus }
+{ Einsetzen Schaltjahr }
+{ Startwert }
+{ Schalttage }
+{ Vergangene Monate in Tagen }
+until k < mhig[v];
+u = := 0;
+if m >= 1 then accumulate;
+cday := tage + k*354 +v+u+ t + dh;
+end;
+procedure hjyear. CalcDatum;
+var mbd : mtype;
+dh,tage,y,j,k,m,t,cyc, s, v : LongInt;
+lr,yrl, vr : real;
+procedure countmonths (var m
+var x,q:
+begin
+integer;
+: = 60;
+q:
+for x := 1 to 5 do
+begin
+mm+1;
+ifs q then exit;
+q
+:= q+30;
+m := m+1;
+ifs q then exit;
+q
+end;
+:= q+29
+m := m+1
+end; { countmonths }
+: Longint; s: LongInt);
+# DTCNV-3-
+C
+C
+begin
+mbd := mb;
+tage: cday;
+if ep
+y
+= 16 then dh := Hegire else dh : = Hegire
+:= tage-dh;
+сус
+:= floor(y, Sisal);
+y:= y-Sisal*cyc;
+if y
+=
+0 then begin
+сус := сус-1;
+:= Sisal
+y:=
+{ 30jahreszyklen }
+1;
+{ Tage im aktuellen Zyklus }
+{ letzter Tag im Zyklus }
+end;
+:= 30*cyc;
+k
+t:= -1;
+if sj
+=
+repeat
+t
+16 then mbd [5]
+else mbd [5]
+:= t+1
+until y < mbd [t];
+if y
+<
+1418
+then Ir :=
+0.9985
+else if y
+<
+2482
+{ Anzahl Jahre der verg. Zyklen }
+{ Startwert }
+{ Schaltjahr wird berücksichtigt }
+:= 5671
+: = 5317;
+{ Schalttage }
+then Ir := 0.9986
+else if (sj
+vr := lr*yrl/354.0;
+=
+15) and (y = 5316) or (y < 4253)
+then Ir := 0.9988
+else lr := 0.9989;
+{ Umrechnung von Tagen in Jahre }
+yrl
+:= y;
+V
+:= trunc (vr);
+j
+:= k+v+1;
+S := y-354*v-t;
+m := 1;
+if s >= 31 then countmonths(m,s);
+t
+:= s-trunc((m-1)*29.5+0.5);
+if j =
+{ Verbleibende Tage im Jahr }
+{ Startwert Monate }
+0 then msg := := TRUE else msg := FALSE;
+if j <= 0 then j
+:= j-1;
+yr := j;
+month := m;
+day := t;
+end;
+procedure adyear. CalcCday;
+var mad : mtype;
+k,1,tage, q,v,y,w,j,m,t longint;
+:
+begin
+mad := ma;
+j
+:= yr;
+m
+: = month
+1;
+t
+:= day;
+if j
+=
+0 then begin
+msg
+:= TRUE;
+j
+:= 1;
+yr : =
+end
+1
+# DTCNV-4-
+C
+C
+C
+C
+if j
+<
+k
+else msg := FALSE;
+0 then j := j+1;
+:= j-1;
+v:= floor(k,400);
+y:= 400*v;
+tage: 365*y+97*v;
+=
+0)))
+k
+:= k-y;
+V
+:= floor(k,100);
+y
+:= 100*v;
+k
+:=k-y;
+y
+:= 4*v;
+tage tage+365*y+24*v;
+v:= floor(k,4);
+tage:= tage+365*y+v;
+if ((((j mod 4) = 0) and ((j mod 100) <> 0) or ((j mod 400
+and (m > 1)) then w
+1
+:= mad[m];
+tage:
+t+1
+: =
+else w
+:= t;
+tage+(k-y)*365+1+w; {gregorianisch}
+if tage <= Gregein then begin
+if ((j mod 4)
+k
+=
+0) and (m > 1)
+then w:= t+1
+else w
+:= j-1;
+:= t;
+tage := k*365+floor(k,4)+1+w-2;
+end;
+C
+(
+cday := tage;
+end;
+procedure adyear. CalcDatum;
+var mad : mtype;
+k,l,s,v,y,tage,j,m, t : LongInt;
+procedure vierhundert;
+begin
+:= 146097;
+1
+y
+:= floor(tage,1);
+j
+:= 400*y;
+k
+:= tage-y*1;
+end; {vierhundert}
+procedure hundert;
+begin
+1 := 36524;
+y
+:= floor(k,1);
+j
+:= j+100*y;
+k
+:= k-y*1;
+y
+:= floor(k,1461);
+j
+:= j+4*y;
+k
+: k-y*1461
+end; {hundert}
+procedure ersterjanuar;
+begin
+y
+:= floor(k,365);
+# DTCNV-5-
+j
+:= j+y+1;
+k
+: k-y*365;
+if k=0 then begin j:=j-1; k 365 end
+end; {ersterjanuar}
+procedure vhschalttag;
+begin
+=
+if (k 0) and ((j mod 400)
+if (k 0) and ((j mod 100)
+=
+end; {vhschalttag}
+procedure vorgregor;
+floor(tage, 1461);
+: =
+=
+0)
+then ersterjanuar;
+>
+0)
+then k : = 366
+else ersterjanuar
+begin
+y
+:=
+j
+: = 4*y;
+k
+:= tage-y*1461+2;
+if k
+=
+1461 then begin k
+:= 366; j
+: =
+j+4 end
+else begin
+if k
+=
+1462 then k
+: = 1461;
+ersterjanuar
+end
+end;
+{vorgregor}
+begin
+mad := ma;
+tage: cday;
+if tage <= Gregein then vorgregor
+else begin
+vierhundert;
+if k 0 then k
+=
+end;
+S
+:= 0;
+k
+:= k-1;
+m
+: = 1;
+v := 0;
+if k >= 31 then begin
+: =
+366
+else begin
+hundert;
+vhschalttag
+end
+if (j mod 4)
+<= 0 then begin
+S
+: =
+1;
+if ((j mod 100)
+=
+0)
+and ((j mod 400)
+>
+0)
+and (tage > Gregein)
+then s := 0
+end;
+repeat
+m:=
+:= m+1;
+if m 2 then v
+=
+:=
+31-s
+else v := mad [m-1]
+(mad[m]+s)
+until k
+<
+end;
+t
+:= k-v-s+1;
+# DTCNV-6-
+C
+if j
+=
+0 then msg
+: =
+TRUE else msg := FALSE;
+if j <<= 0 then j
+:= j-1;
+yr: := j;
+month := m;
+day
+:= t;
+end;
+end.
+# DTCNV-7-
