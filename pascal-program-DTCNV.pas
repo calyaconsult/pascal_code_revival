@@ -5,7 +5,7 @@ program DTCNV;
   and the Gregorian date for a given CDay.
   Status:
     - CalcCday has passed the first test
-    - CalcDatum fails -> the year should be close to "estimated year" but so far it is an absurd number.
+    - CalcDatum is now correct
 }
 
 type
@@ -83,22 +83,23 @@ procedure CalcCday;
 procedure CalcDatum;
     var mad : mtype;
     msg: boolean;
-    k, l, s, v, y, yr, month, day, tage, j, m, t, cday  : LongInt;
+    k, l, s, v, y, tage, j, m, t  : LongInt;
+    cday: LongInt;
     estimatedyear : Double;
     
     procedure vierhundert;
        begin
           l := 146097;
-          y := floor(tage,1);
+          y := floor(tage,l);
           j := 400*y;
-          k:= tage-y*1;
+          k:= tage-y*l;
        end; {vierhundert}
     procedure hundert;
        begin
           l := 36524;
-          y := floor(k,1);
+          y := floor(k,l);
           j := j+100*y;
-          k := k-y*1;
+          k := k-y*l;
           y := floor(k,1461);
           j := j+4*y;
           k := k-y*1461;
@@ -128,11 +129,14 @@ procedure CalcDatum;
                            end
        end; {vorgregor}
     begin
+    
        cday := 739252; { Output of CalcCday }
+       tage := cday;   
        estimatedyear := cday/365;
        Writeln('Estimated year: ',Round(estimatedyear):0);
-       mad := ma;
-       tage := cday;
+       mad := ma; 
+       tage := cday;  {See above, line 79}
+       
        if tage <= Gregein then vorgregor
                           else begin
                                   vierhundert;
@@ -163,10 +167,8 @@ procedure CalcDatum;
     t := k-v-s+1;
     if j = 0 then msg := TRUE else msg := FALSE;
     if j <= 0 then j := j-1;
-    yr := j;
-    month := m;
-    day := t;
-    Writeln('Calculated year:', yr,' month: ',month,' day: ',day);
+
+    Writeln('Calculated year:', j,' month: ', m,' day: ', t);
     end;
 
 begin
